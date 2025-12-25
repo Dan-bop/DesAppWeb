@@ -1,0 +1,19 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Elige tu Ciudad</h2>
+  
+  <div *ngIf="loading" class="text-center">
+    <p>Cargando ciudades...</p>
+  </div>
+
+  <div class="row" *ngIf="!loading">
+    <div class="col-md-4 mb-4" *ngFor="let ciudad of ciudades">
+      <div class="card h-100 shadow-sm">
+        <img [src]="ciudad.imagen" class="card-img-top" [alt]="ciudad.nombre" style="height: 200px; object-fit: cover;">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ ciudad.nombre }}</h5>
+          <a [routerLink]="['/sedes', ciudad.id]" class="btn btn-primary">Ver Sedes</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

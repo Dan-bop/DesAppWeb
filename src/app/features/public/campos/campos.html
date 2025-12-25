@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/ciudades">Ciudades</a></li>
+      <li class="breadcrumb-item active">Sedes</li>
+      <li class="breadcrumb-item active" aria-current="page">Campos</li>
+    </ol>
+  </nav>
+
+  <h2 class="mb-4">Canchas en {{ sedeNombre }}</h2>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-success" role="status"></div>
+    <p>Buscando canchas disponibles...</p>
+  </div>
+
+  <div class="row" *ngIf="!loading">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let campo of campos">
+      <div class="card shadow-sm border-0 h-100">
+        <span class="position-absolute top-0 end-0 m-2 badge" 
+              [ngClass]="campo.disponible ? 'bg-success' : 'bg-danger'">
+          {{ campo.disponible ? 'Disponible' : 'Mantenimiento' }}
+        </span>
+        
+        <img [src]="campo.imagen" class="card-img-top" alt="Cancha" style="height: 200px; object-fit: cover;">
+        
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ campo.nombre }}</h5>
+          <p class="card-text text-muted small">{{ campo.descripcion }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="h5 mb-0 text-success">S/ {{ campo.precioHora }} <small class="text-muted">/hora</small></span>
+            <a [routerLink]="['/campo-detalle', campo.id]" class="btn btn-outline-primary">
+              Reservar ahora
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && campos.length === 0" class="alert alert-warning text-center">
+    No se encontraron canchas registradas para esta sede.
+  </div>
+</div>

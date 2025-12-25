@@ -1,0 +1,43 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white text-center py-3">
+          <h4>Finalizar Reserva</h4>
+          <p class="mb-0">Monto a pagar: <strong>S/ {{ pago.monto }}</strong></p>
+        </div>
+        
+        <div class="card-body p-4">
+          <label class="form-label fw-bold">Selecciona tu método de pago:</label>
+          <div class="d-flex justify-content-between mb-4">
+            <button class="btn btn-outline-primary px-4" [class.active]="metodoSeleccionado === 'TARJETA'" (click)="metodoSeleccionado = 'TARJETA'">💳 Tarjeta</button>
+            <button class="btn btn-outline-warning px-4" [class.active]="metodoSeleccionado === 'YAPE'" (click)="metodoSeleccionado = 'YAPE'">🟣 Yape</button>
+            <button class="btn btn-outline-info px-4" [class.active]="metodoSeleccionado === 'PLIN'" (click)="metodoSeleccionado = 'PLIN'">🔵 Plin</button>
+          </div>
+
+          <div *ngIf="metodoSeleccionado === 'TARJETA'" class="animate__animated animate__fadeIn">
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Nombre en la tarjeta" [(ngModel)]="pago.titular">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="0000 0000 0000 0000" [(ngModel)]="pago.numeroTarjeta">
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3"><input type="text" class="form-control" placeholder="MM/YY" [(ngModel)]="pago.vencimiento"></div>
+              <div class="col-6 mb-3"><input type="password" class="form-control" placeholder="CVV" [(ngModel)]="pago.cvv"></div>
+            </div>
+          </div>
+
+          <div *ngIf="metodoSeleccionado !== 'TARJETA'" class="text-center py-3 animate__animated animate__fadeIn">
+            <img [src]="metodoSeleccionado === 'YAPE' ? 'assets/yape-qr.png' : 'assets/plin-qr.png'" class="img-fluid mb-2" style="max-height: 200px;">
+            <p>Escanea el código QR para pagar <strong>S/ {{ pago.monto }}</strong></p>
+          </div>
+
+          <button class="btn btn-success btn-lg w-100 mt-3" [disabled]="loading" (click)="procesarPago()">
+            {{ loading ? 'Validando con el banco...' : 'Confirmar Pago' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

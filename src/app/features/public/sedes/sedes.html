@@ -1,0 +1,20 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Sedes en {{ ciudadNombre }}</h2>
+  
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let sede of sedes">
+      <div class="card shadow-sm">
+        <img [src]="sede.imagenUrl" class="card-img-top" alt="Imagen Sede" style="height: 180px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">{{ sede.nombre }}</h5>
+          <p class="card-text"><i class="bi bi-geo-alt"></i> {{ sede.direccion }}</p>
+          <a [routerLink]="['/campos', sede.id]" class="btn btn-success w-100">Ver Canchas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="sedes.length === 0" class="alert alert-info">
+    No hay sedes registradas para esta ciudad todavía.
+  </div>
+</div>

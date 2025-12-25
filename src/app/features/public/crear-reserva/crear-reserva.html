@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <div class="row" *ngIf="preReserva">
+    <div class="col-md-5">
+      <div class="card bg-light p-4 shadow-sm mb-4">
+        <h4 class="border-bottom pb-2">Resumen</h4>
+        <p><strong>Cancha:</strong> {{ preReserva.campo.nombre }}</p>
+        <p><strong>Sede:</strong> {{ preReserva.campo.sede.nombre }}</p>
+        <p><strong>Fecha:</strong> {{ preReserva.fecha | date:'fullDate' }}</p>
+        <p><strong>Horario:</strong> {{ horarioSeleccionado || preReserva.horaInicio }} hrs</p>
+        <hr>
+        <h5 class="text-success">Total a pagar: S/ {{ preReserva.campo.precioHora }}</h5>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="card p-4 shadow">
+        <h3 class="mb-4">Tus Datos para la Reserva</h3>
+        <form #reservaForm="ngForm" (ngSubmit)="confirmarReserva()">
+          <div class="mb-3">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" name="nombre" [(ngModel)]="datosInvitado.nombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="datosInvitado.email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono / WhatsApp</label>
+            <input type="tel" class="form-control" name="telefono" [(ngModel)]="datosInvitado.telefono" required>
+          </div>
+
+          <!-- 🔽 Nuevo campo select para horarios -->
+          <div class="mb-3">
+  <label class="form-label">Selecciona Horario</label>
+  <select class="form-select" name="horario" [(ngModel)]="horarioSeleccionado" required>
+    <option *ngFor="let h of horariosDisponibles" [value]="h">
+      {{ h }}
+    </option>
+  </select>
+</div>
+
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!reservaForm.valid || loading">
+              {{ loading ? 'Procesando...' : 'Confirmar y Pagar' }}
+            </button>
+            <a routerLink="/ciudades" class="btn btn-link text-muted">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container mt-4" *ngIf="campo">
+  <div class="row">
+    <div class="col-md-7">
+      <img [src]="campo.imagen" class="img-fluid rounded shadow" [alt]="campo.nombre">
+      <h2 class="mt-3">{{ campo.nombre }}</h2>
+      <p class="text-muted">{{ campo.descripcion }}</p>
+      <h4 class="text-success font-weight-bold">S/ {{ campo.precioHora }} por hora</h4>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card p-4 border-success shadow">
+        <h4 class="mb-3">Reserva tu horario</h4>
+        
+        <label>1. Elige la fecha:</label>
+        <input type="date" class="form-control mb-3" 
+               [(ngModel)]="fechaSeleccionada" (change)="consultarHoras()">
+
+        <label>2. Horas disponibles:</label>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <button *ngFor="let hora of horasLibres" 
+                  class="btn" 
+                  [ngClass]="horaSeleccionada === hora ? 'btn-success' : 'btn-outline-success'"
+                  (click)="horaSeleccionada = hora">
+            {{ hora }}
+          </button>
+          <p *ngIf="horasLibres.length === 0" class="text-danger">No hay horarios para este día.</p>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" 
+                [disabled]="!horaSeleccionada"
+                (click)="irAReservar()">
+          Continuar con la Reserva
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
