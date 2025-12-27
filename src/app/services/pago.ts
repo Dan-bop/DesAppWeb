@@ -7,7 +7,7 @@ import { Pago, PagoRequest } from '../models';
   providedIn: 'root',
 })
 export class PagoService {
-  private API_URL='htpp://localhost:8080/pagos';
+  private API_URL='http://localhost:8080/pagos';
 
   constructor (private http:HttpClient) {}
   //Envia el pago

@@ -26,6 +26,21 @@ export class DataService {
   getCampoDetalle(id: number): Observable<Campo> {
     return this.http.get<Campo>(`${this.API_URL}/campos/${id}`);
   }
+  // Obtener reservas por el ID del usuario
+getReservasPorUsuario(usuarioId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.API_URL}/reservas/usuario/${usuarioId}`);
+}
+
+// Eliminar usuario de la base de datos
+eliminarUsuario(usuarioId: number): Observable<any> {
+  return this.http.delete(`${this.API_URL}/usuarios/${usuarioId}`);
+}
+
+// Opcional: Cambiar contraseña
+cambiarPassword(usuarioId: number, nuevaPass: string): Observable<any> {
+  return this.http.put(`${this.API_URL}/usuarios/${usuarioId}/password`, { password: nuevaPass });
+}
+  
 }
 
   

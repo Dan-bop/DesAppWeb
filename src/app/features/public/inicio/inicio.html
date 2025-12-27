@@ -1,1 +1,67 @@
-<p>inicio works!</p>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="overlay"></div>
+  <div class="hero-content text-center">
+    <h1>PACIFIC SPORT</h1>
+    <p>La gloria se vive en la cancha.</p>
+  </div>
+</section>
+
+
+<!-- ===== CARRUSEL INFINITO ===== -->
+<section class="carousel-section">
+  <div class="carousel-track">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb4xchlH_5js7zHdAPiejXqcJMiwBya2g8Cw&s" />
+    <img src="https://cdn.aarp.net/content/dam/aarp/entertainment/television/2017/07/1140-world-cup-trophy-ball-trivia-esp.jpg" />
+    <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a" />
+    <img src="https://img.freepik.com/foto-gratis/hombres-tiro-completo-jugando-al-futbol_23-2150405376.jpg?semt=ais_hybrid&w=740&q=80" />
+
+    <!-- Duplicados para loop -->
+    <img src="https://img.freepik.com/foto-gratis/hombres-tiro-completo-jugando-al-futbol_23-2150405437.jpg?semt=ais_hybrid&w=740&q=80" />
+    <img src="https://thepfsa.co.uk/wp-content/uploads/2022/06/Playing-Football.jpg" />
+    <img src="https://elbuho.pe/wp-content/uploads/2025/04/futbol-847x475.jpg" />
+    <img src="https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/c6b4ab4e-95fc-435e-af61-0740b44c4bde/%C2%BFcu%C3%A1les-son-las-posiciones-en-el-f%C3%BAtbol.jpg" />
+  </div>
+</section>
+
+
+<div class="container py-5">
+  <h2 class="section-title">Selecciona tu Ciudad</h2>
+
+<div class="cities-grid">
+  <div class="city-box" *ngFor="let ciudad of ciudades" [routerLink]="['/sedes', ciudad.id]">
+    <img [src]="ciudad.imagen" [alt]="ciudad.nombre">
+    <div class="city-name">
+      {{ ciudad.nombre | uppercase }}
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ===== TESTIMONIOS ===== -->
+<section class="testimonials">
+  <h2 class="section-title">Testimonios</h2>
+
+  <div class="testimonials-grid">
+
+    <div class="testimonial">
+      <p>"Excelente servicio y canchas en perfecto estado."</p>
+      <h4>- Carlos M.</h4>
+    </div>
+
+    <div class="testimonial">
+      <p>"Reservar nunca fue tan fácil."</p>
+      <h4>- Ana R.</h4>
+    </div>
+
+    <div class="testimonial">
+      <p>"Las instalaciones son de primera."</p>
+      <h4>- Diego P.</h4>
+    </div>
+
+  </div>
+</section>
+
+
+<

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { RegistroRequest, LoginRequest, UsuarioResponse } from '../models';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,14 @@ import { RegistroRequest, LoginRequest, UsuarioResponse } from '../models';
 export class AuthService {
   private API_URL = 'http://localhost:8080/usuarios';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
   registrar(usuario: RegistroRequest): Observable<UsuarioResponse> {
     return this.http.post<UsuarioResponse>(`${this.API_URL}/registro`, usuario);
@@ -18,22 +26,28 @@ export class AuthService {
   login(credenciales: LoginRequest): Observable<UsuarioResponse> {
     return this.http.post<UsuarioResponse>(`${this.API_URL}/login`, credenciales).pipe(
       tap((user: UsuarioResponse) => {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        if (this.isBrowser()) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
       })
     );
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    if (this.isBrowser()) {
+      localStorage.removeItem('currentUser');
+    }
   }
 
   isLoggedIn(): boolean {
+    if (!this.isBrowser()) return false;
     return localStorage.getItem('currentUser') !== null;
   }
 
- getUserRole(): string {
-  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  return user.rol || 'USER';
-}
+  getUserRole(): string {
+    if (!this.isBrowser()) return 'USER';
 
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return user.rol || 'USER';
+  }
 }

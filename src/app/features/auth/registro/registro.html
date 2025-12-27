@@ -1,1 +1,43 @@
-<p>registro works!</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+          <h2 class="text-center fw-bold mb-4 text-primary">Crea tu Cuenta</h2>
+          <p class="text-center text-muted mb-4">Únete a Pacific Sport para gestionar tus reservas</p>
+
+          <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+            <div class="mb-3">
+              <label class="form-label">Nombre Completo</label>
+              <input type="text" name="nombre" class="form-control" [(ngModel)]="nuevoUsuario.nombre" required placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Correo Electrónico</label>
+              <input type="email" name="email" class="form-control" [(ngModel)]="nuevoUsuario.email" required placeholder="juan@correo.com">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Teléfono</label>
+              <input type="text" name="telefono" class="form-control" [(ngModel)]="nuevoUsuario.telefono" placeholder="999 999 999">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Contraseña</label>
+              <input type="password" name="password" class="form-control" [(ngModel)]="nuevoUsuario.password" required placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg shadow" [disabled]="!registerForm.valid">
+              Registrarme ahora
+            </button>
+
+            <div class="mt-4 text-center">
+              <span class="text-muted">¿Ya tienes cuenta?</span> 
+              <a routerLink="/login" class="text-primary fw-bold text-decoration-none ms-1">Inicia Sesión</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

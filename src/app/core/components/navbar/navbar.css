@@ -1,0 +1,59 @@
+/* Estilos generales del navbar */
+.navbar {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+/* Marca Pacific Sport */
+.navbar-brand {
+  font-size: 1.3rem;
+  color: #28a745 !important;
+  transition: color 0.3s ease;
+}
+.navbar-brand:hover {
+  color: #20c997 !important;
+}
+
+/* Centrado de los botones */
+.navbar-nav {
+  display: flex;
+  justify-content: center;   /* Centra horizontalmente */
+  align-items: center;       /* Centra verticalmente */
+  gap: 1.5rem;               /* Espaciado uniforme entre botones */
+  width: 100%;               /* Ocupa todo el ancho disponible */
+}
+
+/* Links */
+.nav-link {
+  color: #f8f9fa !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: #28a745 !important;
+}
+
+/* Botón de iniciar sesión */
+.btn-outline-success {
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Dropdown */
+.dropdown-toggle {
+  font-weight: 600;
+}
+.dropdown-menu {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}

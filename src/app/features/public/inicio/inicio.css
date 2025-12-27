@@ -1,0 +1,171 @@
+/* FONDO DE TODA LA PÁGINA (Se mantiene igual) */
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), 
+                url('https://s.yimg.com/ny/api/res/1.2/2l29PjRXyoQ3mcoLjNJSrA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyNDI7aD04ODk7Y2Y9d2VicA--/https://s.yimg.com/os/creatr-uploaded-images/2022-12/a3a34890-7f03-11ed-a7e9-6563dc325d4d') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* HERO SECTION */
+.hero {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 🔥 EFECTO LETRAS EN LLAMAS PARA PACIFIC SPORT 🔥 */
+.hero h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    /* Sombras de capas para simular fuego */
+    text-shadow: 0 0 10px #fff, 0 -5px 20px #fefcc9, 10px -10px 30px #feec85, -20px -20px 40px #ffae34, 20px -40px 50px #ec760c, -20px -60px 60px #cd4606;
+    animation: fire-animation 1.5s infinite alternate;
+}
+
+@keyframes fire-animation {
+    0% { transform: scale(1); text-shadow: 0 0 10px #fff, 0 -5px 20px #fefcc9, 10px -10px 30px #feec85, -20px -20px 40px #ffae34, 20px -40px 50px #ec760c; }
+    100% { transform: scale(1.03); text-shadow: 0 0 20px #fff, 0 -10px 30px #fefcc9, 15px -15px 40px #feec85, -25px -25px 50px #ffae34, 25px -45px 65px #ec760c; }
+}
+
+/* 🏎️ CARRUSEL INFINITO - IMÁGENES MÁS GRANDES */
+.carousel-section {
+    overflow: hidden;
+    padding: 40px 0; /* Más espacio */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+}
+
+.carousel-track {
+    display: flex;
+    /* Ajustado para el nuevo tamaño de imagen */
+    width: calc(450px * 8); 
+    animation: scroll 25s linear infinite;
+}
+
+.carousel-track img {
+    width: 450px; /* Aumentado de 250px a 450px */
+    height: 300px; /* Aumentado de 150px a 300px */
+    object-fit: cover;
+    margin: 0 15px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-450px * 4)); }
+}
+
+/* 📍 GRILLA DE CIUDADES - CORREGIDA */
+.cities-grid {
+    display: grid;
+    /* Ajustamos el mínimo a 180px para cuadros más compactos */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 25px;
+    padding: 20px;
+    max-width: 900px; 
+    margin: 0 auto;
+}
+
+.city-box {
+    position: relative;
+    height: 150px; /* Altura ajustada para que sea un cuadro pequeño */
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.1);
+    background-color: #000; /* Fondo negro por si la imagen tiene proporciones distintas */
+    transition: all 0.4s ease;
+}
+
+.city-box img {
+    width: 100%;
+    height: 100%;
+    /* 'object-fit: cover' es mejor para grillas, pero 'object-position' 
+       asegura que veamos lo importante (el centro de la ciudad) */
+    object-fit: cover; 
+    object-position: center; 
+    transition: transform 0.5s ease;
+    opacity: 0.8; /* Un poco opaca para que resalte el nombre, se aclara al hover */
+}
+
+.city-name {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Overlay degradado para que el nombre se lea perfecto */
+    background: rgba(0, 0, 0, 0.3); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+/* HOVER EFECTOS */
+.city-box:hover {
+    transform: scale(1.05);
+    border-color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.city-box:hover img {
+    transform: scale(1.1);
+    opacity: 1; /* Se aclara la imagen al pasar el mouse */
+}
+
+.city-box:hover .city-name {
+    background: rgba(0, 255, 136, 0.2); /* Tinte verde sutil al hover */
+    color: #fff;
+}
+
+/* TESTIMONIOS (Se mantienen iguales) */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.testimonial {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+.testimonial h4 { color: #00ff88; margin-top: 15px; }
+
+.section-title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  position: relative;
+  transition: color .4s ease;
+  text-shadow: 0 5px 18px rgba(0,0,0,0.6);
+}
+
+
+
+/* Cambio de color al pasar el mouse */
+.section-title:hover {
+  color: #0acf0a;
+}

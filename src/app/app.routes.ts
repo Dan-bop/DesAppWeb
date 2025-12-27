@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   // MÓDULO PÚBLICO
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: 'inicio', loadComponent: () => import('./features/public/inicio/inicio').then(m => m.Inicio) },
+  { path: 'inicio', loadComponent: () => import('./features/public/inicio/inicio').then(m => m.InicioComponent) },
   { path: 'ciudades', loadComponent: () => import('./features/public/ciudades/ciudades').then(m => m.CiudadesComponent) },
   { path: 'sedes/:ciudadId', loadComponent: () => import('./features/public/sedes/sedes').then(m => m.SedesComponent) },
   { path: 'campos/:sedeId', loadComponent: () => import('./features/public/campos/campos').then(m => m.CamposComponent) },

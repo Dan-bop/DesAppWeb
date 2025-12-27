@@ -7,7 +7,7 @@ import { AuthService } from '../../../services/auth';
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,FormsModule,RouterModule],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
 })

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -15,19 +17,29 @@ export class NavbarComponent implements OnInit {
   userName = '';
   isAdmin = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   ngOnInit(): void {
-    // Nos suscribimos o revisamos el estado del login
     this.checkUserStatus();
   }
 
   checkUserStatus() {
-    this.isLoggedIn = this.authService.isLoggedIn();
-    if (this.isLoggedIn) {
-      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!isPlatformBrowser(this.platformId)) return; // 👈 SOLO navegador
+
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      this.isLoggedIn = true;
       this.userName = user.nombre;
-      this.isAdmin = this.authService.getUserRole() === 'ADMIN';
+      this.isAdmin = user.rol === 'ADMIN';
+    } else {
+      this.isLoggedIn = false;
+      this.userName = '';
+      this.isAdmin = false;
     }
   }
 
