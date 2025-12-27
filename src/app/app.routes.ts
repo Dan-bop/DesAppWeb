@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: 'campo-detalle/:id', loadComponent: () => import('./features/public/campo-detalle/campo-detalle').then(m => m.CampoDetalleComponent) },
   { path: 'crear-reserva', loadComponent: () => import('./features/public/crear-reserva/crear-reserva').then(m => m.CrearReservaComponent) },
   { path: 'pago/:reservaId', loadComponent: () => import('./features/public/pago-simulacion/pago-simulacion').then(m => m.PagoSimulacionComponent) },
-
+  { path: 'perfil', loadComponent: () => import('./features/public/perfil/perfil').then(m => m.PerfilComponent) },
   // MÓDULO AUTH
   { path: 'login', loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent) },
   { path: 'registro', loadComponent: () => import('./features/auth/registro/registro').then(m => m.RegistroComponent) },

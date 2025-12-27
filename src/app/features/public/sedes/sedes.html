@@ -1,20 +1,33 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Sedes en {{ ciudadNombre }}</h2>
+  <h2 class="mb-4 fw-bold text-dark">Sedes en {{ ciudadNombre }}</h2>
   
   <div class="row">
     <div class="col-md-4 mb-4" *ngFor="let sede of sedes">
-      <div class="card shadow-sm">
-        <img [src]="sede.imagenUrl" class="card-img-top" alt="Imagen Sede" style="height: 180px; object-fit: cover;">
+      <div class="card shadow-sm border-0 h-100 overflow-hidden">
+        
+        <img [src]="sede.imagenUrl ? sede.imagenUrl : 'assets/img/default-sede.jpg'" 
+             class="card-img-top" 
+             [alt]="sede.nombre" 
+             style="height: 200px; object-fit: cover;"
+             (error)="manejarErrorImagen($event)">
+             
         <div class="card-body">
-          <h5 class="card-title">{{ sede.nombre }}</h5>
-          <p class="card-text"><i class="bi bi-geo-alt"></i> {{ sede.direccion }}</p>
-          <a [routerLink]="['/campos', sede.id]" class="btn btn-success w-100">Ver Canchas</a>
+          <h5 class="card-title fw-bold text-primary">{{ sede.nombre }}</h5>
+          <p class="card-text text-muted mb-4">
+            <i class="bi bi-geo-alt-fill text-danger"></i> {{ sede.direccion }}
+          </p>
+          <div class="mt-auto">
+            <a [routerLink]="['/campos', sede.id]" class="btn btn-success w-100 fw-bold shadow-sm">
+              <i class="bi bi-search me-2"></i> Ver Canchas
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="sedes.length === 0" class="alert alert-info">
-    No hay sedes registradas para esta ciudad todavía.
+  <div *ngIf="sedes && sedes.length === 0" class="alert alert-info border-0 shadow-sm py-4 text-center">
+    <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+    <p class="mb-0">No hay sedes registradas para esta ciudad todavía.</p>
   </div>
 </div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReservaService } from '../../../services/reserva';
-import { ReservaRequest } from '../../../models';
+import { ReservaRequest, UsuarioResponse } from '../../../models';
 
 @Component({
   selector: 'app-crear-reserva',
@@ -13,12 +13,15 @@ import { ReservaRequest } from '../../../models';
   styleUrl: './crear-reserva.css',
 })
 export class CrearReservaComponent implements OnInit {
-  preReserva : any;
+  preReserva: any;
+  usuarioLogueado: UsuarioResponse | null = null;
+  
   datosInvitado = {
     nombre: '',
     email: '',
     telefono: ''
   };
+  
   loading = false;
 
   constructor(
@@ -26,48 +29,49 @@ export class CrearReservaComponent implements OnInit {
     private router: Router
   ) {}
 
-  horariosDisponibles: string[] = [];
-horarioSeleccionado: string = '';
+  ngOnInit(): void {
+    // 1. Obtener la elección que viene de Campo Detalle
+    const stored = localStorage.getItem('preReserva');
+    if (!stored) {
+      this.router.navigate(['/campos']); // Si no hay nada, regresa al catálogo
+      return;
+    }
+    this.preReserva = JSON.parse(stored);
 
- ngOnInit(): void {
-  const stored = localStorage.getItem('preReserva');
-  if (!stored) {
-    this.router.navigate(['/ciudades']);
-    return;
+    // 2. Autocompletar si el usuario tiene sesión iniciada
+    const userStored = localStorage.getItem('currentUser');
+    if (userStored) {
+      this.usuarioLogueado = JSON.parse(userStored);
+      this.datosInvitado.nombre = this.usuarioLogueado?.nombre || '';
+      this.datosInvitado.email = this.usuarioLogueado?.email || '';
+    }
   }
-  this.preReserva = JSON.parse(stored);
-
-  // 🔽 Llamada al backend para traer horarios disponibles
-  this.reservaService.getDisponibilidad(this.preReserva.campo.id, this.preReserva.fecha)
-    .subscribe(horarios => this.horariosDisponibles = horarios);
-}
-
 
   confirmarReserva() {
-  this.loading = true;
+    this.loading = true;
 
-  const [horaInicio, horaFin] = this.horarioSeleccionado.split(' - ');
+    // Ya no hacemos split de horaSeleccionada, usamos los datos limpios de preReserva
+    const request: ReservaRequest = {
+      campoId: this.preReserva.campo.id,
+      fecha: this.preReserva.fecha,
+      horaInicio: this.preReserva.horaInicio,
+      horaFin: this.preReserva.horaFin,
+      nombreInvitado: this.datosInvitado.nombre,
+      emailInvitado: this.datosInvitado.email,
+      telefonoInvitado: this.datosInvitado.telefono
+    };
 
-  const request: ReservaRequest = {
-    campoId: this.preReserva.campo.id,
-    fecha: this.preReserva.fecha,
-    horaInicio: horaInicio,
-    horaFin: horaFin,
-    nombreInvitado: this.datosInvitado.nombre,
-    emailInvitado: this.datosInvitado.email,
-    telefonoInvitado: this.datosInvitado.telefono
-  };
-
-  this.reservaService.crearReserva(request).subscribe({
-    next: (reservaGuardada) => {
-      alert('¡Reserva creada! Ahora procede al pago.');
-      this.router.navigate(['/pago', reservaGuardada.id]);
-    },
-    error: (err) => {
-      alert('Error al crear reserva: ' + err.error);
-      this.loading = false;
-    }
-  });
-
-}
+    this.reservaService.crearReserva(request).subscribe({
+      next: (reservaGuardada) => {
+        localStorage.removeItem('preReserva'); // Limpiar después de éxito
+        alert('¡Reserva creada con éxito! Ahora puedes proceder al pago.');
+        this.router.navigate(['/pago', reservaGuardada.id]);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error al crear reserva: ' + (err.error?.message || 'El horario ya no está disponible'));
+        this.loading = false;
+      }
+    });
+  }
 }

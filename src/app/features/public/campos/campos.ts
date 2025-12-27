@@ -21,21 +21,22 @@ export class CamposComponent {
     private dataService : DataService
   ) {}
 
-  ngOnInit(): void {
-    const sedeId = Number(this.route.snapshot.paramMap.get('sedeId'));
-    
+ ngOnInit(): void {
+  this.route.paramMap.subscribe(params => {
+    const sedeId = Number(params.get('sedeId'));
+    console.log("INIT CAMPOS", sedeId);
+
     this.dataService.getCamposPorSede(sedeId).subscribe({
       next: (data) => {
         this.campos = data;
-        if (data.length > 0) this.sedeNombre = data[0].sede.nombre;
+        if (data.length > 0) this.sedeNombre = data[0].sede?.nombre ?? '';
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error al cargar campos', err);
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
-  }
+  });
 }
+}
+
 
 

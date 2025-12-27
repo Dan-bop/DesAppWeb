@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" *ngIf="pago">
     <div class="col-md-6">
       <div class="card shadow-lg border-0">
         <div class="card-header bg-dark text-white text-center py-3">
@@ -28,12 +28,22 @@
             </div>
           </div>
 
-          <div *ngIf="metodoSeleccionado !== 'TARJETA'" class="text-center py-3 animate__animated animate__fadeIn">
-            <img [src]="metodoSeleccionado === 'YAPE' ? 'assets/yape-qr.png' : 'assets/plin-qr.png'" class="img-fluid mb-2" style="max-height: 200px;">
-            <p>Escanea el código QR para pagar <strong>S/ {{ pago.monto }}</strong></p>
+          <div *ngIf="metodoSeleccionado === 'YAPE' || metodoSeleccionado === 'PLIN'" class="text-center py-3 animate__animated animate__fadeIn">
+            <div class="p-3 border rounded bg-light mb-3">
+              <img [src]="metodoSeleccionado === 'YAPE' 
+                    ? 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YAPE-PAYMENT' 
+                    : 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PLIN-PAYMENT'" 
+                   class="img-fluid mb-3 shadow-sm" 
+                   style="max-height: 200px; border: 5px solid #fff;">
+              
+              <h5 class="fw-bold" [ngClass]="{'text-warning': metodoSeleccionado === 'YAPE', 'text-info': metodoSeleccionado === 'PLIN'}">
+                Pagar con {{ metodoSeleccionado }}
+              </h5>
+              <p class="small text-muted mb-0">Escanea el código QR para pagar <strong>S/ {{ pago.monto }}</strong></p>
+            </div>
           </div>
 
-          <button class="btn btn-success btn-lg w-100 mt-3" [disabled]="loading" (click)="procesarPago()">
+          <button class="btn btn-success btn-lg w-100 mt-3" [disabled]="loading || !metodoSeleccionado" (click)="procesarPago()">
             {{ loading ? 'Validando con el banco...' : 'Confirmar Pago' }}
           </button>
         </div>

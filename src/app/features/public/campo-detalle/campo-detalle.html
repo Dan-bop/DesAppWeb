@@ -1,33 +1,64 @@
-<div class="container mt-4" *ngIf="campo">
+<div class="container mt-4 py-5" *ngIf="campo; else loading">
   <div class="row">
     <div class="col-md-7">
-      <img [src]="campo.imagen" class="img-fluid rounded shadow" [alt]="campo.nombre">
-      <h2 class="mt-3">{{ campo.nombre }}</h2>
+      <img [src]="campo.imagen || 'assets/img/default.jpg'" class="img-fluid rounded shadow" [alt]="campo.nombre">
+      <h2 class="mt-3 fw-bold">{{ campo.nombre }}</h2>
       <p class="text-muted">{{ campo.descripcion }}</p>
-      <h4 class="text-success font-weight-bold">S/ {{ campo.precioHora }} por hora</h4>
+      
+      <div class="p-3 bg-light rounded d-inline-block">
+        <h4 class="text-success fw-bold mb-0">
+          S/ {{ (campo.precioHora || 0) | number:'1.2-2' }} <span class="fs-6 text-muted">/ hora</span>
+        </h4>
+      </div>
     </div>
 
     <div class="col-md-5">
-      <div class="card p-4 border-success shadow">
-        <h4 class="mb-3">Reserva tu horario</h4>
+      <div class="card p-4 border-success shadow-sm">
+        <h4 class="mb-4 fw-bold text-center">Reserva tu horario</h4>
         
-        <label>1. Elige la fecha:</label>
+        <label class="form-label fw-bold small">1. Elige la fecha:</label>
         <input type="date" class="form-control mb-3" 
                [(ngModel)]="fechaSeleccionada" (change)="consultarHoras()">
 
-        <label>2. Horas disponibles:</label>
-        <div class="d-flex flex-wrap gap-2 mb-4">
+        <label class="form-label fw-bold small">2. ¿Cuántas horas jugarán?</label>
+        <select class="form-select mb-3" [(ngModel)]="duracionSeleccionada">
+          <option [value]="1">1 Hora</option>
+          <option [value]="2">2 Horas (Máximo)</option>
+        </select>
+
+        <label class="form-label fw-bold small">3. Horas de inicio disponibles:</label>
+        <div class="d-flex flex-wrap gap-2 mb-3">
           <button *ngFor="let hora of horasLibres" 
-                  class="btn" 
-                  [ngClass]="horaSeleccionada === hora ? 'btn-success' : 'btn-outline-success'"
+                  type="button"
+                  class="btn btn-sm" 
+                  [ngClass]="horaSeleccionada === hora ? 'btn-success text-white' : 'btn-outline-success'"
                   (click)="horaSeleccionada = hora">
             {{ hora }}
           </button>
-          <p *ngIf="horasLibres.length === 0" class="text-danger">No hay horarios para este día.</p>
+        </div>
+        
+        <div *ngIf="horasLibres.length === 0" class="alert alert-warning py-2 small">
+          No hay horarios disponibles para este día.
         </div>
 
-        <button class="btn btn-primary btn-lg w-100" 
-                [disabled]="!horaSeleccionada"
+        <div *ngIf="horaSeleccionada && duracionSeleccionada == 2 && !horasLibres.includes(calcularSiguienteRango(horaSeleccionada))" 
+             class="alert alert-danger py-2 small mt-2">
+          <i class="bi bi-exclamation-triangle-fill"></i> La hora siguiente está ocupada. Selecciona otra hora o cambia a 1 hora.
+        </div>
+
+        <div class="alert alert-success border-0 bg-success bg-opacity-10 mt-3" *ngIf="horaSeleccionada">
+          <p class="mb-0 small">
+            <strong>Resumen:</strong> {{ fechaSeleccionada | date:'dd/MM/yyyy' }} <br>
+            <strong>Horario:</strong> {{ horaSeleccionada.split(' ')[0] }} - {{ calcularHoraFin(horaSeleccionada, duracionSeleccionada) }}
+          </p>
+          <hr class="my-2">
+          <p class="mb-0 fw-bold">
+            Total: S/ {{ ((campo.precioHora || 0) * duracionSeleccionada) | number:'1.2-2' }}
+          </p>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100 shadow-sm mt-3" 
+                [disabled]="!horaSeleccionada || (duracionSeleccionada == 2 && !horasLibres.includes(calcularSiguienteRango(horaSeleccionada)))"
                 (click)="irAReservar()">
           Continuar con la Reserva
         </button>
@@ -35,3 +66,10 @@
     </div>
   </div>
 </div>
+
+<ng-template #loading>
+  <div class="container py-5 text-center">
+    <div class="spinner-border text-success" role="status"></div>
+    <p class="text-muted mt-2">Cargando detalles de la cancha...</p>
+  </div>
+</ng-template>
